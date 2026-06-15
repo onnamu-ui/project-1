@@ -153,11 +153,41 @@ img_payroll = make_img(
         ">> 기존 양식 파일에 입력 (지급액·원천징수 3.3%)",
         ">> 은행 거래내역 다운로드 후 함께 첨부",
         "--",
-        "## 회계법인 송부",
+        "## 회계법인 송부 및 급여명세서 전달",
         ">> 급여 지급 후 3 영업일 이내 이메일 발송",
-        ">> 첨부 : 급여대장 + 사업소득지급대장 + 은행 거래내역",
+        ">> 회계법인으로부터 급여명세서 수령 → 급여일 3일 전 대표님 전달",
     ],
     "img_05_payroll.png"
+)
+
+img_vat_cert = make_img(
+    "부가가치세 과세표준증명 발급 – 홈택스",
+    [
+        "## 홈택스 > 민원증명 > 부가가치세 과세표준증명",
+        ">> 사업자등록번호 확인 후 과세기간 선택",
+        ">> [즉시발급] → PDF 저장",
+        "--",
+        "  ※ 과세기간 : 1기(1~6월) / 2기(7~12월) 선택",
+        "  ※ 부가세 신고 완료 후 발급 가능",
+        "  ※ 주로 금융기관·공공기관 제출용으로 사용",
+        "  ※ 유효기간 : 발급일로부터 30일 (제출 직전 발급 권장)",
+    ],
+    "img_06_vat_cert.png"
+)
+
+img_fs_cert = make_img(
+    "표준재무제표증명 발급 – 홈택스",
+    [
+        "## 홈택스 > 민원증명 > 표준재무제표증명(법인)",
+        ">> 사업자등록번호 확인 후 사업연도 선택",
+        ">> [즉시발급] → PDF 저장",
+        "--",
+        "  ※ 법인세 신고 완료 후 해당 사업연도 발급 가능",
+        "  ※ 재무상태표 / 손익계산서 등 포함",
+        "  ※ 금융기관 대출·입찰·계약 등 제출용으로 사용",
+        "  ※ 유효기간 : 발급일로부터 30일 (제출 직전 발급 권장)",
+    ],
+    "img_07_fs_cert.png"
 )
 
 
@@ -381,8 +411,59 @@ def build_pdf(out_path):
     ], 1):
         story.append(Paragraph(f"{i}. {s}", S["bullet"]))
 
+    story.append(Paragraph("■ 급여명세서 대표님 전달", S["h2"]))
+    story.append(Paragraph(
+        "자료 송부 후 회계법인으로부터 <b>급여명세서</b>를 메일로 수령합니다. "
+        "수령 즉시 내용을 확인하고 <b>급여일 3일 전까지 대표님께 전달</b>합니다.",
+        S["body"]))
+
     story.append(Spacer(1, 0.3*cm))
     story.append(img_block(img_payroll, "급여대장 작성 및 회계법인 송부 예시"))
+    story.append(PageBreak())
+
+    # ══ 6. 부가가치세 과세표준증명 발급
+    DARK_RED = colors.HexColor("#8a1a1a")
+    story.append(sec_hdr("6. 부가가치세 과세표준증명 발급", color=DARK_RED))
+    story.append(Spacer(1, 0.3*cm))
+    story.append(Paragraph(
+        "사업자의 부가가치세 신고 과세표준 금액을 증명하는 서류로, "
+        "금융기관·공공기관 제출 등에 활용합니다. "
+        "<b>홈택스</b> &gt; 민원증명 메뉴에서 발급합니다.",
+        S["body"]))
+    story.append(Spacer(1, 0.2*cm))
+    for i, s in enumerate([
+        "홈택스(hometax.go.kr) 로그인",
+        "민원증명 &gt; 부가가치세 과세표준증명 선택",
+        "사업자등록번호 확인 후 과세기간 선택 (1기: 1~6월 / 2기: 7~12월)",
+        "[즉시발급] → PDF 저장",
+    ], 1):
+        story.append(Paragraph(f"{i}. {s}", S["bullet"]))
+    story.append(Spacer(1, 0.3*cm))
+    story.append(img_block(img_vat_cert, "홈택스 부가가치세 과세표준증명 발급 화면 예시"))
+    story.append(Paragraph("※ 부가세 신고 완료 후 해당 과세기간 발급 가능", S["note"]))
+    story.append(Paragraph("※ 유효기간 : 발급일로부터 30일 → 제출 직전 발급 권장", S["note"]))
+    story.append(PageBreak())
+
+    # ══ 7. 표준재무제표증명 발급
+    DARK_GREEN2 = colors.HexColor("#1a5a2a")
+    story.append(sec_hdr("7. 표준재무제표증명 발급", color=DARK_GREEN2))
+    story.append(Spacer(1, 0.3*cm))
+    story.append(Paragraph(
+        "법인세 신고 내용을 바탕으로 재무상태표·손익계산서 등을 증명하는 서류입니다. "
+        "금융기관 대출·입찰·계약 등 제출에 활용하며 <b>홈택스</b>에서 발급합니다.",
+        S["body"]))
+    story.append(Spacer(1, 0.2*cm))
+    for i, s in enumerate([
+        "홈택스(hometax.go.kr) 로그인",
+        "민원증명 &gt; 표준재무제표증명(법인) 선택",
+        "사업자등록번호 확인 후 사업연도 선택",
+        "[즉시발급] → PDF 저장",
+    ], 1):
+        story.append(Paragraph(f"{i}. {s}", S["bullet"]))
+    story.append(Spacer(1, 0.3*cm))
+    story.append(img_block(img_fs_cert, "홈택스 표준재무제표증명 발급 화면 예시"))
+    story.append(Paragraph("※ 법인세 신고 완료 후 해당 사업연도 발급 가능", S["note"]))
+    story.append(Paragraph("※ 유효기간 : 발급일로부터 30일 → 제출 직전 발급 권장", S["note"]))
 
     story.append(Spacer(1, 0.6*cm))
     story.append(HRFlowable(width="100%", thickness=1,
@@ -607,9 +688,56 @@ def build_docx(out_path):
         "제목 형식 : [회사명] YYYY년 MM월 급여 관련 자료 송부",
     ], 1):
         add_bullet(doc, f"{i}. {s}")
+    add_para(doc, "■ 급여명세서 대표님 전달", bold=True)
+    add_para(doc,
+        "자료 송부 후 회계법인으로부터 급여명세서를 메일로 수령합니다. "
+        "수령 즉시 내용을 확인하고 급여일 3일 전까지 대표님께 전달합니다.")
     doc.add_paragraph()
     add_img(doc, img_payroll, "급여대장 작성 및 회계법인 송부 예시")
+    doc.add_page_break()
 
+    # 6. 부가가치세 과세표준증명
+    add_sec_hdr(doc, "6. 부가가치세 과세표준증명 발급", bg="8a1a1a")
+    add_para(doc,
+        "사업자의 부가가치세 신고 과세표준 금액을 증명하는 서류로, "
+        "금융기관·공공기관 제출 등에 활용합니다. 홈택스 > 민원증명 메뉴에서 발급합니다.")
+    doc.add_paragraph()
+    for i, s in enumerate([
+        "홈택스(hometax.go.kr) 로그인",
+        "민원증명 > 부가가치세 과세표준증명 선택",
+        "사업자등록번호 확인 후 과세기간 선택 (1기: 1~6월 / 2기: 7~12월)",
+        "[즉시발급] → PDF 저장",
+    ], 1):
+        add_bullet(doc, f"{i}. {s}")
+    doc.add_paragraph()
+    add_img(doc, img_vat_cert, "홈택스 부가가치세 과세표준증명 발급 화면 예시")
+    add_para(doc, "※ 부가세 신고 완료 후 해당 과세기간 발급 가능",
+             color=RGBColor(0xB0, 0x40, 0x00))
+    add_para(doc, "※ 유효기간 : 발급일로부터 30일 → 제출 직전 발급 권장",
+             color=RGBColor(0xB0, 0x40, 0x00))
+    doc.add_page_break()
+
+    # 7. 표준재무제표증명
+    add_sec_hdr(doc, "7. 표준재무제표증명 발급", bg="1a5a2a")
+    add_para(doc,
+        "법인세 신고 내용을 바탕으로 재무상태표·손익계산서 등을 증명하는 서류입니다. "
+        "금융기관 대출·입찰·계약 등 제출에 활용하며 홈택스에서 발급합니다.")
+    doc.add_paragraph()
+    for i, s in enumerate([
+        "홈택스(hometax.go.kr) 로그인",
+        "민원증명 > 표준재무제표증명(법인) 선택",
+        "사업자등록번호 확인 후 사업연도 선택",
+        "[즉시발급] → PDF 저장",
+    ], 1):
+        add_bullet(doc, f"{i}. {s}")
+    doc.add_paragraph()
+    add_img(doc, img_fs_cert, "홈택스 표준재무제표증명 발급 화면 예시")
+    add_para(doc, "※ 법인세 신고 완료 후 해당 사업연도 발급 가능",
+             color=RGBColor(0xB0, 0x40, 0x00))
+    add_para(doc, "※ 유효기간 : 발급일로부터 30일 → 제출 직전 발급 권장",
+             color=RGBColor(0xB0, 0x40, 0x00))
+
+    doc.add_paragraph()
     fp = doc.add_paragraph(
         "본 자료는 인수인계 목적으로 작성되었습니다. 법령 개정 또는 사내 규정 변경 시 담당자가 업데이트하십시오.")
     fp.alignment = WD_ALIGN_PARAGRAPH.CENTER
