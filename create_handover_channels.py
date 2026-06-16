@@ -89,19 +89,27 @@ def make_img(title, lines, filename, width=760, height=380,
 
 
 img_slack_ch = make_img(
-    "슬랙 (Slack) – 채널 구조",
+    "슬랙 (Slack) – ONNAMU 사내 채널 목록",
     [
-        "## 채널 유형",
-        ">> # 공개채널 : 전체 구성원 참여 가능  (예: #공지사항, #전체)",
-        ">> 🔒 비공개채널 : 초대된 멤버만 접근  (예: #인사팀, #경영지원)",
-        ">> ✉ 다이렉트메시지(DM) : 1:1 또는 소그룹 비공개 대화",
+        "## 공개 채널 (#)",
+        "  #0-소셜-전체소통방       전체 구성원 자유 소통",
+        "  #0-주간회의                    주간 회의 자료 및 공유",
+        "  #1-근무및휴가                근무·휴가 신청 및 공유",
+        "  #1-대표님-지시사항        대표님 지시사항 전달",
+        "  #공모사업                        공모사업 관련 정보 공유",
+        "  #김보고서-알림              보고서 알림 봇 채널",
+        "  #indonesia인니팀-행정   인도네시아팀 행정 채널",
         "--",
-        "## 주요 공개 채널",
-        "  #공지사항   전사 공지 (읽기 전용)",
-        "  #전체          전체 소통",
-        "  #업무요청    부서 간 업무 요청",
+        "## 비공개 채널 (🔒) – 초대된 멤버만 접근",
+        "  🔒 3language-translation     다국어 번역 채널",
+        "  🔒 ai-에이전트-테스트      AI 에이전트 테스트",
+        "  🔒 legal-review                    법무 검토",
+        "  🔒 sns-content-design         SNS 콘텐츠 디자인",
+        "  🔒 summary-visualization    요약·시각화",
+        "  🔒 youtube-summary             유튜브 요약",
     ],
     "img_s01_slack_ch.png",
+    height=440,
     header_bg=(74, 21, 75)
 )
 
@@ -320,7 +328,7 @@ def build_pdf(out_path):
          Paragraph("1:1 또는 소그룹 비공개 대화", S["body"]),
          Paragraph("개인 간 업무 논의", S["body"])],
     ]
-    ch_tbl = Table(ch_data, colWidths=[3.5*cm, 6*cm, 7.1*cm])
+    ch_tbl = Table(ch_data, colWidths=[2.2*cm, 7.2*cm, 7.2*cm])
     ch_tbl.setStyle(TableStyle([
         ("BACKGROUND",    (0,0),(-1,0), C_SLACK),
         ("ROWBACKGROUNDS",(0,1),(-1,-1),[colors.white, colors.HexColor("#f5eef8")]),
